@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>My NFC Site</title>
+    <title>NFC Gallery</title>
     <meta charset="UTF-8">
     <style>
         body {
@@ -10,33 +10,109 @@
             padding: 50px;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
+            min-height: 100vh;
         }
-        h1 { font-size: 2.5em; margin-bottom: 20px; }
-        .nfc-icon { font-size: 4em; margin: 20px; }
-        .memory-photo {
-            width: 80%;
-            max-width: 500px;
-            border-radius: 15px;
+        .customer-photo {
+            width: 90%;
+            max-width: 600px;
+            border-radius: 20px;
             margin: 20px auto;
-            border: 5px solid white;
-            box-shadow: 0 0 25px rgba(0,0,0,0.4);
+            border: 8px solid white;
+            box-shadow: 0 0 30px rgba(0,0,0,0.5);
+            display: none;
         }
-        .caption {
-            font-style: italic;
-            margin-top: 10px;
-            font-size: 1.1em;
+        .customer-info {
+            display: none;
+            margin: 20px auto;
+        }
+        .loading {
+            font-size: 1.5em;
+        }
+        .error {
+            color: #ff6b6b;
+            font-size: 1.2em;
         }
     </style>
 </head>
 <body>
-    <div class="nfc-icon">📸</div>
-    <h1>Kỷ Niệm Đẹp 💖</h1>
+    <div id="loading" class="loading">🔄 Đang tải ảnh...</div>
     
-    <!-- ẢNH KỶ NIỆM -->
-    <img src="memory.jpg" alt="Anh nhớ em nhiều lắm" class="memory-photo">
-    <div class="caption">Những kỷ niệm đáng nhớ</div>
-    
-    <p>Chia sẻ khoảnh khắc qua NFC</p>
-    <p>❤️ GitHub Pages</p>
+    <div id="customer-container">
+        <img id="customer-photo" class="customer-photo" alt="Ảnh khách hàng">
+        <div id="customer-info" class="customer-info">
+            <h1 id="customer-name">Khách hàng</h1>
+            <p id="customer-message">Cảm ơn bạn đã sử dụng dịch vụ!</p>
+        </div>
+    </div>
+
+    <div id="error" class="error" style="display: none;">
+        ❌ Không tìm thấy ảnh của khách hàng này
+    </div>
+
+    <script>
+        // Lấy ID khách hàng từ URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const customerId = urlParams.get('id');
+        
+        // Danh sách thông tin khách hàng (có thể mở rộng)
+  const customers = {
+    '1': { name: 'Khách Hàng 1', message: 'Kỷ niệm đẹp đầu tiên' },
+    '2': { name: 'Khách Hàng 2', message: 'Khoảnh khắc đáng nhớ' },
+    '3': { name: 'Khách Hàng 3', message: 'Buổi chụp ảnh tuyệt vời' },
+    '4': { name: 'Khách Hàng 4', message: 'Ngày đặc biệt' },
+    '5': { name: 'Khách Hàng 5', message: 'Kỷ niệm khó quên' },
+    '6': { name: 'Khách Hàng 6', message: 'Khoảnh khắc yêu thương' },
+    '7': { name: 'Khách Hàng 7', message: 'Kỷ niệm ngọt ngào' }
+    // Thêm tiếp khi có khách mới...
+};
+              function loadCustomerPhoto() {
+            const loadingEl = document.getElementById('loading');
+            const errorEl = document.getElementById('error');
+            const containerEl = document.getElementById('customer-container');
+            const photoEl = document.getElementById('customer-photo');
+            const nameEl = document.getElementById('customer-name');
+            const messageEl = document.getElementById('customer-message');
+
+            if (!customerId) {
+                loadingEl.style.display = 'none';
+                errorEl.textContent = '❌ Thiếu ID khách hàng';
+                errorEl.style.display = 'block';
+                return;
+            }
+
+            // Tạo URL ảnh
+            const photoUrl = `${customerId}.jpg`;
+            
+            // Kiểm tra ảnh có tồn tại không
+            const img = new Image();
+            img.onload = function() {
+                // Ảnh tồn tại, hiển thị
+                loadingEl.style.display = 'none';
+                photoEl.src = photoUrl;
+                photoEl.style.display = 'block';
+                
+                // Hiển thị thông tin khách hàng nếu có
+                if (customers[customerId]) {
+                    nameEl.textContent = customers[customerId].name;
+                    messageEl.textContent = customers[customerId].message;
+                    document.getElementById('customer-info').style.display = 'block';
+                }
+                
+                containerEl.style.display = 'block';
+            };
+            
+            img.onerror = function() {
+                // Ảnh không tồn tại
+                loadingEl.style.display = 'none';
+                errorEl.textContent = `❌ Không tìm thấy ảnh cho khách hàng ID: ${customerId}`;
+                errorEl.style.display = 'block';
+            };
+            
+            img.src = photoUrl;
+        }
+
+        // Load ảnh khi trang ready
+        document.addEventListener('DOMContentLoaded', loadCustomerPhoto);
+    </script>
 </body>
 </html>
