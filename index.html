@@ -5,12 +5,17 @@
     <meta charset="UTF-8">
     <style>
         body {
-            font-family: Arial, sans-serif;
+            font-family: "Segoe UI", Arial, sans-serif;
             text-align: center;
-            padding: 50px;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
+            margin: 0;
+            padding: 40px 20px;
+            background: url('https://i.pinimg.com/originals/6d/f0/a3/6df0a36e8f2f97b1ad5b67aeb01f4ffb.jpg') center/cover no-repeat fixed;
+            color: #ff66a3;
             min-height: 100vh;
+            overflow-y: scroll;
+        }
+        h1, p {
+            margin: 0;
         }
         .customer-photo {
             width: 90%;
@@ -18,7 +23,7 @@
             border-radius: 20px;
             margin: 20px auto;
             border: 8px solid white;
-            box-shadow: 0 0 30px rgba(0,0,0,0.5);
+            box-shadow: 0 0 30px rgba(255, 182, 193, 0.7);
             display: none;
         }
         .customer-info {
@@ -27,18 +32,51 @@
         }
         .loading {
             font-size: 1.5em;
+            color: white;
         }
         .error {
             color: #ff6b6b;
             font-size: 1.2em;
         }
+        .text-below {
+            font-size: 1.3em;
+            margin-top: 10px;
+            font-style: italic;
+            color: #ff80b3;
+        }
+        hr {
+            width: 80%;
+            border: none;
+            border-top: 3px dotted #ffb6c1;
+            margin: 40px auto;
+        }
+        video {
+            width: 90%;
+            max-width: 600px;
+            border-radius: 20px;
+            border: 8px solid white;
+            box-shadow: 0 0 30px rgba(255, 182, 193, 0.7);
+            display: none;
+        }
     </style>
 </head>
 <body>
-    <div id="loading" class="loading">🔄 Đang tải ảnh...</div>
+    <div id="loading" class="loading">💖 Đang tải nội dung...</div>
     
     <div id="customer-container">
         <img id="customer-photo" class="customer-photo" alt="Ảnh khách hàng">
+        <div id="photo-text" class="text-below">"The first food that you made for me"</div>
+
+        <hr>
+
+        <video id="customer-video" controls>
+            <source id="video-source" src="" type="video/mp4">
+            Trình duyệt của bạn không hỗ trợ video.
+        </video>
+        <div id="video-text" class="text-below">
+            "Mèo méo meo mèo meo, con mèo ngu ngốc đáng yêu cute phô mai we xin chào cạ nhà"
+        </div>
+
         <div id="customer-info" class="customer-info">
             <h1 id="customer-name">Khách hàng</h1>
             <p id="customer-message">Cảm ơn bạn đã sử dụng dịch vụ!</p>
@@ -46,7 +84,7 @@
     </div>
 
     <div id="error" class="error" style="display: none;">
-        ❌ Không tìm thấy ảnh của khách hàng này
+        ❌ Không tìm thấy ảnh hoặc video của khách hàng này
     </div>
 
     <script>
@@ -54,22 +92,22 @@
         const urlParams = new URLSearchParams(window.location.search);
         const customerId = urlParams.get('id');
         
-        // Danh sách thông tin khách hàng (có thể mở rộng)
-  const customers = {
-    '1': { name: 'Khách Hàng 1', message: 'Kỷ niệm đẹp đầu tiên' },
-    '2': { name: 'Khách Hàng 2', message: 'Khoảnh khắc đáng nhớ' },
-    '3': { name: 'Khách Hàng 3', message: 'Buổi chụp ảnh tuyệt vời' },
-    '4': { name: 'Khách Hàng 4', message: 'Ngày đặc biệt' },
-    '5': { name: 'Khách Hàng 5', message: 'Kỷ niệm khó quên' },
-    '6': { name: 'Khách Hàng 6', message: 'Khoảnh khắc yêu thương' },
-    '7': { name: 'Khách Hàng 7', message: 'Kỷ niệm ngọt ngào' }
-    // Thêm tiếp khi có khách mới...
-};
-              function loadCustomerPhoto() {
+        // Danh sách thông tin khách hàng
+        const customers = {
+            '1': { name: 'Khách Hàng 1', message: 'Kỷ niệm đẹp đầu tiên' },
+            '2': { name: 'Khách Hàng 2', message: 'Khoảnh khắc đáng nhớ' },
+            '3': { name: 'Khách Hàng 3', message: 'Buổi chụp ảnh tuyệt vời' },
+            '4': { name: 'Khách Hàng 4', message: 'Ngày đặc biệt' },
+            '5': { name: 'Khách Hàng 5', message: 'Kỷ niệm khó quên' },
+            '6': { name: 'Khách Hàng 6', message: 'Khoảnh khắc yêu thương' },
+            '7': { name: 'Khách Hàng 7', message: 'Kỷ niệm ngọt ngào' }
+        };
+
+        function loadCustomerContent() {
             const loadingEl = document.getElementById('loading');
             const errorEl = document.getElementById('error');
-            const containerEl = document.getElementById('customer-container');
             const photoEl = document.getElementById('customer-photo');
+            const videoEl = document.getElementById('customer-video');
             const nameEl = document.getElementById('customer-name');
             const messageEl = document.getElementById('customer-message');
 
@@ -80,39 +118,35 @@
                 return;
             }
 
-            // Tạo URL ảnh
             const photoUrl = `${customerId}.jpg`;
-            
-            // Kiểm tra ảnh có tồn tại không
+            const videoUrl = `${customerId}.mp4`;
+
+            // Kiểm tra ảnh
             const img = new Image();
             img.onload = function() {
-                // Ảnh tồn tại, hiển thị
-                loadingEl.style.display = 'none';
                 photoEl.src = photoUrl;
                 photoEl.style.display = 'block';
-                
-                // Hiển thị thông tin khách hàng nếu có
                 if (customers[customerId]) {
                     nameEl.textContent = customers[customerId].name;
                     messageEl.textContent = customers[customerId].message;
                     document.getElementById('customer-info').style.display = 'block';
                 }
-                
-                containerEl.style.display = 'block';
-            };
-            
-            img.onerror = function() {
-                // Ảnh không tồn tại
+                // Hiển thị video
+                const video = document.getElementById('customer-video');
+                const videoSource = document.getElementById('video-source');
+                videoSource.src = videoUrl;
+                video.load();
+                video.style.display = 'block';
                 loadingEl.style.display = 'none';
-                errorEl.textContent = `❌ Không tìm thấy ảnh cho khách hàng ID: ${customerId}`;
+            };
+            img.onerror = function() {
+                loadingEl.style.display = 'none';
                 errorEl.style.display = 'block';
             };
-            
             img.src = photoUrl;
         }
 
-        // Load ảnh khi trang ready
-        document.addEventListener('DOMContentLoaded', loadCustomerPhoto);
+        document.addEventListener('DOMContentLoaded', loadCustomerContent);
     </script>
 </body>
 </html>
