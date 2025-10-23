@@ -1,123 +1,103 @@
 <!DOCTYPE html>
-<html>
+<html lang="vi">
 <head>
-    <title>Hapi Charms NFC Gallery</title>
-    <meta charset="UTF-8">
-    <style>
-        body {
-            font-family: "Segoe UI", Arial, sans-serif;
-            text-align: center;
-            margin: 0;
-            padding: 40px 20px;
-            background: url('https://i.pinimg.com/originals/6d/f0/a3/6df0a36e8f2f97b1ad5b67aeb01f4ffb.jpg') center/cover no-repeat fixed;
-            color: #ff3399;
-            font-weight: 600;
-            overflow-y: scroll;
-        }
-
-        img.logo {
-            width: 140px;
-            margin-bottom: 25px;
-            filter: drop-shadow(0 0 10px rgba(255, 182, 193, 0.8));
-        }
-
-        .photo-block {
-            margin-bottom: 60px;
-        }
-
-        .customer-photo {
-            width: 90%;
-            max-width: 600px;
-            border-radius: 20px;
-            margin: 20px auto;
-            border: 6px solid white;
-            box-shadow: 0 0 25px rgba(255, 182, 193, 0.9);
-        }
-
-        .text-below {
-            font-size: 1.3em;
-            margin-top: 10px;
-            font-style: italic;
-            color: #ff1a8c;
-        }
-
-        hr {
-            width: 80%;
-            border: none;
-            border-top: 3px dotted #ff99cc;
-            margin: 40px auto;
-        }
-
-        video {
-            width: 90%;
-            max-width: 600px;
-            border-radius: 25px;
-            border: 6px solid white;
-            box-shadow: 0 0 35px rgba(255, 153, 204, 0.8);
-            margin-top: 15px;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-        }
-
-        video:hover {
-            transform: scale(1.02);
-            box-shadow: 0 0 45px rgba(255, 128, 170, 1);
-        }
-
-        .footer-text {
-            margin-top: 60px;
-            font-size: 1.4em;
-            color: #ff1a8c;
-        }
-    </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Xem video</title>
+  <style>
+    body {
+      margin: 0;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background-color: #000;
+      color: white;
+      font-family: sans-serif;
+      flex-direction: column;
+    }
+    video {
+      width: 90%;
+      max-width: 800px;
+      border-radius: 12px;
+      box-shadow: 0 0 20px rgba(255, 255, 255, 0.2);
+    }
+    .controls {
+      margin-top: 12px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    button {
+      background-color: #ff8800;
+      color: white;
+      border: none;
+      padding: 8px 16px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 15px;
+    }
+    button:hover {
+      background-color: #ffaa33;
+    }
+  </style>
 </head>
 <body>
-    <!-- Logo đầu trang -->
-    <img src="Bản_sao_của_Hapi-removebg-preview.png" alt="Hapi Charms Logo" class="logo">
+  <video id="player" controls muted>
+    <source id="videoSource" src="" type="video/mp4" />
+    Trình duyệt của bạn không hỗ trợ video.
+  </video>
 
-    <div id="gallery-container">
+  <div class="controls">
+    <button id="toggleBtn">Play</button>
+    <button id="muteBtn">Unmute</button>
+  </div>
 
-        <!-- Ảnh 1 -->
-        <div class="photo-block">
-            <img src="4.jpg" alt="Ảnh 1" class="customer-photo">
-            <div class="text-below">
-                "Anh làm chú gấu này mong chú sẽ thay anh bảo vệ giấc ngủ và những giấc mơ đẹp của em nhé"
-            </div>
-        </div>
+  <script>
+    // ✅ Lấy tham số id từ URL
+    const params = new URLSearchParams(window.location.search);
+    const id = params.get("id") || "1"; // mặc định id=1 nếu không có
 
-        <hr>
+    // ✅ Map id sang file video thật (bạn có thể thêm nhiều hơn)
+    const videoMap = {
+      1: "7149023309407.mp4",
+      2: "video2.mp4",
+      3: "video3.mp4"
+    };
 
-        <!-- Ảnh 2 -->
-        <div class="photo-block">
-            <img src="6.jpg" alt="Ảnh 2" class="customer-photo">
-            <div class="text-below">
-                "Món quà anh được nhận vào buổi first date của chúng mình, anh thích lắm hehe"
-            </div>
-        </div>
+    const videoFile = videoMap[id] || videoMap[1];
+    const video = document.getElementById("player");
+    const source = document.getElementById("videoSource");
+    const toggleBtn = document.getElementById("toggleBtn");
+    const muteBtn = document.getElementById("muteBtn");
 
-        <hr>
+    source.src = videoFile;
+    video.load();
 
-        <!-- Ảnh 3 -->
-        <div class="photo-block">
-            <img src="5.jpg" alt="Ảnh 3" class="customer-photo">
-            <div class="text-below">
-                "Món quà handmade đầu tiên anh tự tay làm tặng em nè"
-            </div>
-        </div>
+    // ✅ Nút play/pause
+    toggleBtn.addEventListener("click", () => {
+      if (video.paused) {
+        video.play();
+        toggleBtn.textContent = "Pause";
+      } else {
+        video.pause();
+        toggleBtn.textContent = "Play";
+      }
+    });
 
-        <hr>
+    // ✅ Nút bật/tắt tiếng
+    muteBtn.addEventListener("click", () => {
+      video.muted = !video.muted;
+      muteBtn.textContent = video.muted ? "Unmute" : "Mute";
+    });
 
-        <!-- Video -->
-        <div class="photo-block">
-            <video autoplay muted loop playsinline>
-                <source src="7149023309407.mp4" type="video/mp4">
-                Trình duyệt của bạn không hỗ trợ video.
-            </video>
-            <div class="text-below">
-                "Mèo méo meo mèo meo, con mèo ngu ngốc đáng yêu cute phô mai we xin chào cạ nhà"
-            </div>
-        </div>
-
-        <div class="footer-text">From Hapi Charms with love &lt;3</div>
-    </div>
+    // ✅ Tự đổi nút khi video dừng
+    video.addEventListener("pause", () => {
+      toggleBtn.textContent = "Play";
+    });
+    video.addEventListener("play", () => {
+      toggleBtn.textContent = "Pause";
+    });
+  </script>
 </body>
 </html>
