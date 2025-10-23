@@ -1,179 +1,205 @@
 <!DOCTYPE html>
 <html lang="vi">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>From Hapi Charms with Love 💕</title>
-  <style>
-    body {
-      margin: 0;
-      padding: 20px;
-      background: radial-gradient(circle at top, #ffe6f2, #ffcce6);
-      font-family: "Poppins", sans-serif;
-      text-align: center;
-      color: #ff4b9f;
-    }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>From Hapi Charms with Love 💕</title>
+<style>
+  body {
+    margin: 0;
+    padding: 20px;
+    background: radial-gradient(circle at top, #ffe6f2, #ffcce6);
+    font-family: "Poppins", sans-serif;
+    text-align: center;
+    color: #ff4b9f;
+  }
 
-    img.logo {
-      width: 120px;
-      display: block;
-      margin: 0 auto 15px;
-    }
+  img.logo {
+    width: 120px;
+    display: block;
+    margin: 0 auto 15px;
+  }
 
-    h2 {
-      margin-bottom: 40px;
-      font-weight: 600;
-      color: #ff3388;
-    }
+  h2 {
+    margin-bottom: 40px;
+    font-weight: 600;
+    color: #ff3388;
+  }
 
-    .gallery {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 60px;
-    }
+  .gallery {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 60px;
+  }
 
-    .photo-container {
-      position: relative;
-      display: inline-block;
-      border-radius: 16px;
-      overflow: visible;
-      cursor: pointer;
-    }
+  .photo-container {
+    position: relative;
+    display: inline-block;
+    border-radius: 16px;
+    overflow: visible;
+    cursor: pointer;
+  }
 
-    .photo-container img {
-      width: 350px;
-      border-radius: 16px;
-      box-shadow: 0 0 25px rgba(0, 0, 0, 0.2);
-      position: relative;
-      z-index: 2;
-    }
+  .photo-container img {
+    width: 350px;
+    border-radius: 16px;
+    box-shadow: 0 0 25px rgba(0, 0, 0, 0.2);
+    position: relative;
+    z-index: 2;
+  }
 
-    .caption {
-      margin-top: 12px;
-      font-size: 16px;
-      color: #ff3388;
-      font-style: italic;
-    }
+  .caption {
+    margin-top: 12px;
+    font-size: 16px;
+    color: #ff3388;
+    font-style: italic;
+  }
 
-    hr {
-      width: 80%;
-      border: none;
-      border-top: 1px dashed #ffb6d9;
-      margin: 50px auto;
-    }
+  hr {
+    width: 80%;
+    border: none;
+    border-top: 1px dashed #ffb6d9;
+    margin: 50px auto;
+  }
 
-    video {
-      width: 80%;
-      max-width: 600px;
-      border-radius: 20px;
-      border: 6px solid white;
-      box-shadow: 0 0 40px rgba(255, 105, 180, 0.4);
-      display: block;
-      margin: 30px auto;
-    }
+  /* VIDEO */
+  .video-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
 
-    .video-controls {
-      margin-top: 10px;
-    }
+  video {
+    width: 80%;
+    max-width: 600px;
+    border-radius: 20px;
+    border: 6px solid white;
+    box-shadow: 0 0 40px rgba(255, 105, 180, 0.4);
+    display: block;
+  }
 
-    button {
-      background-color: #ff7eb9;
-      border: none;
-      border-radius: 8px;
-      color: white;
-      font-weight: bold;
-      padding: 8px 14px;
-      cursor: pointer;
-      margin: 0 6px;
-      transition: background 0.2s ease;
-    }
+  .video-controls {
+    margin-top: 10px;
+  }
 
-    button:hover {
-      background-color: #ff5fa6;
-    }
+  button {
+    background-color: #ff7eb9;
+    border: none;
+    border-radius: 8px;
+    color: white;
+    font-weight: bold;
+    padding: 8px 14px;
+    cursor: pointer;
+    margin: 0 6px;
+    transition: background 0.2s ease;
+  }
 
-    .footer {
-      margin-top: 60px;
-      font-weight: bold;
-      font-size: 18px;
-      color: #ff3388;
-    }
+  button:hover {
+    background-color: #ff5fa6;
+  }
 
-    /* Hiệu ứng tim */
-    .heart {
-      position: absolute;
-      width: 20px;
-      height: 20px;
-      background-color: #ff4b9f;
-      transform: rotate(45deg);
-      opacity: 0.9;
-      animation: floatUp 2s ease-out forwards;
-      filter: blur(1px);
-      z-index: 1;
-    }
+  .footer {
+    margin-top: 60px;
+    font-weight: bold;
+    font-size: 18px;
+    color: #ff3388;
+  }
 
-    .heart::before,
-    .heart::after {
-      content: "";
-      position: absolute;
-      width: 20px;
-      height: 20px;
-      background-color: #ff4b9f;
-      border-radius: 50%;
-    }
+  /* TIM TRÀO SÁNG */
+  .heart {
+    position: absolute;
+    width: 18px;
+    height: 18px;
+    background-color: #ff4b9f;
+    transform: rotate(45deg);
+    opacity: 0.95;
+    animation: floatUp 2.2s ease-out forwards;
+    filter: drop-shadow(0 0 6px #ff99cc);
+    z-index: 1;
+  }
 
-    .heart::before { top: -10px; left: 0; }
-    .heart::after { top: 0; left: -10px; }
+  .heart::before,
+  .heart::after {
+    content: "";
+    position: absolute;
+    width: 18px;
+    height: 18px;
+    background-color: #ff4b9f;
+    border-radius: 50%;
+  }
 
-    @keyframes floatUp {
-      0% { transform: scale(0.8) rotate(45deg) translateY(0); opacity: 1; }
-      100% { transform: scale(1.6) rotate(45deg) translateY(-120px); opacity: 0; }
-    }
-  </style>
+  .heart::before { top: -9px; left: 0; }
+  .heart::after { top: 0; left: -9px; }
+
+  @keyframes floatUp {
+    0% { transform: scale(0.7) rotate(45deg) translateY(0); opacity: 1; }
+    30% { transform: scale(1.1) rotate(45deg) translateY(-20px); opacity: 1; }
+    100% { transform: scale(1.6) rotate(45deg) translateY(-120px); opacity: 0; }
+  }
+
+  @keyframes ripple {
+    0% { transform: scale(0); opacity: 0.6; }
+    100% { transform: scale(3); opacity: 0; }
+  }
+
+  .ripple {
+    position: absolute;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(255,120,180,0.7), transparent);
+    animation: ripple 1s ease-out forwards;
+    z-index: 1;
+  }
+</style>
 </head>
+
 <body>
   <img src="Bản_sao_của_Hapi-removebg-preview.png" class="logo" alt="Logo Hapi Charms" />
   <h2>From Hapi Charms with love 💗</h2>
 
   <div class="gallery">
-    <!-- Ảnh 1 -->
-    <div class="photo-container" onclick="burstHearts(this)">
+
+    <!-- ẢNH 1 -->
+    <div class="photo-container" onclick="burstHearts(this, event)">
       <img src="4.jpg" alt="Ảnh 1" />
       <div class="caption">"Anh làm chú gấu này mong chú sẽ thay anh bảo vệ giấc ngủ và những giấc mơ đẹp của em nhé"</div>
     </div>
 
-    <hr />
+    <hr>
 
-    <!-- Ảnh 2 -->
-    <div class="photo-container" onclick="burstHearts(this)">
+    <!-- ẢNH 2 -->
+    <div class="photo-container" onclick="burstHearts(this, event)">
       <img src="6.jpg" alt="Ảnh 2" />
       <div class="caption">"Món quà anh được nhận vào buổi first date của chúng mình, anh thích lắm hehe"</div>
     </div>
 
-    <hr />
+    <hr>
 
-    <!-- Ảnh 3 -->
-    <div class="photo-container" onclick="burstHearts(this)">
+    <!-- ẢNH 3 -->
+    <div class="photo-container" onclick="burstHearts(this, event)">
       <img src="5.jpg" alt="Ảnh 3" />
       <div class="caption">"Món quà handmade đầu tiên anh tự tay làm tặng em nè"</div>
     </div>
 
-    <hr />
+    <hr>
 
-    <!-- Video -->
-    <video id="video" controls>
-      <source src="7149023309407.mp4" type="video/mp4">
-      Trình duyệt của bạn không hỗ trợ video.
-    </video>
+    <!-- VIDEO -->
+    <div class="video-wrapper">
+      <video id="video" controls>
+        <source src="7149023309407.mp4" type="video/mp4">
+        Trình duyệt của bạn không hỗ trợ video.
+      </video>
 
-    <div class="video-controls">
-      <button onclick="togglePlay()">Play / Pause</button>
-      <button onclick="toggleMute()">Mute / Unmute</button>
-    </div>
+      <div class="video-controls">
+        <button onclick="togglePlay()">Play / Pause</button>
+        <button onclick="toggleMute()">Mute / Unmute</button>
+      </div>
 
-    <div class="caption">
-      "Mèo méo meo mèo meo, con mèo ngu ngốc đáng yêu cute phô mai we xin chào cạ nhà"
+      <div class="caption">
+        "Mèo méo meo mèo meo, con mèo ngu ngốc đáng yêu cute phô mai we xin chào cạ nhà"
+      </div>
     </div>
   </div>
 
@@ -191,14 +217,27 @@
       video.muted = !video.muted;
     }
 
-    function burstHearts(container) {
-      for (let i = 0; i < 15; i++) {
+    function burstHearts(container, e) {
+      const rect = container.getBoundingClientRect();
+      const xClick = e.clientX - rect.left;
+      const yClick = e.clientY - rect.top;
+
+      // Hiệu ứng ripple trào quanh viền
+      const ripple = document.createElement("div");
+      ripple.classList.add("ripple");
+      ripple.style.left = `${xClick - 20}px`;
+      ripple.style.top = `${yClick - 20}px`;
+      container.appendChild(ripple);
+      setTimeout(() => ripple.remove(), 1000);
+
+      // Tim bay
+      for (let i = 0; i < 18; i++) {
         const heart = document.createElement("div");
         heart.classList.add("heart");
         container.appendChild(heart);
 
         const angle = Math.random() * 2 * Math.PI;
-        const radius = 160 + Math.random() * 40;
+        const radius = 130 + Math.random() * 40;
         const x = Math.cos(angle) * radius;
         const y = Math.sin(angle) * radius;
 
@@ -206,16 +245,15 @@
         heart.style.bottom = "0";
         heart.style.animationDelay = (Math.random() * 0.3) + "s";
         heart.style.transform = `rotate(45deg) translate(${x}px, ${y}px)`;
+        heart.style.backgroundColor = ["#ff4b9f", "#ff77aa", "#ff99cc"][Math.floor(Math.random()*3)];
+        heart.style.filter = "drop-shadow(0 0 8px #ffb3d9)";
 
         const scale = 0.6 + Math.random() * 0.6;
-        heart.style.transformOrigin = "center";
         heart.style.scale = scale;
-        heart.style.backgroundColor = ["#ff4b9f", "#ff77aa", "#ffa3c3"][Math.floor(Math.random()*3)];
 
-        setTimeout(() => heart.remove(), 2000);
+        setTimeout(() => heart.remove(), 2200);
       }
     }
   </script>
 </body>
 </html>
-
