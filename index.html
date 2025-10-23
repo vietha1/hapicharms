@@ -1,28 +1,29 @@
 <!DOCTYPE html>
 <html lang="vi">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>From Hapi Charms with love 💕</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>From Hapi Charms with Love 💕</title>
   <style>
     body {
       margin: 0;
       padding: 20px;
-      text-align: center;
-      background-color: #fff0f5;
+      background: radial-gradient(circle at top, #ffe6f2, #ffcce6);
       font-family: "Poppins", sans-serif;
+      text-align: center;
       color: #ff4b9f;
     }
 
     img.logo {
       width: 120px;
       display: block;
-      margin: 0 auto 20px;
+      margin: 0 auto 15px;
     }
 
     h2 {
       margin-bottom: 40px;
       font-weight: 600;
+      color: #ff3388;
     }
 
     .gallery {
@@ -30,7 +31,6 @@
       flex-direction: column;
       align-items: center;
       gap: 60px;
-      position: relative;
     }
 
     .photo-container {
@@ -44,11 +44,63 @@
     .photo-container img {
       width: 350px;
       border-radius: 16px;
-      box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+      box-shadow: 0 0 25px rgba(0, 0, 0, 0.2);
       position: relative;
       z-index: 2;
     }
 
+    .caption {
+      margin-top: 12px;
+      font-size: 16px;
+      color: #ff3388;
+      font-style: italic;
+    }
+
+    hr {
+      width: 80%;
+      border: none;
+      border-top: 1px dashed #ffb6d9;
+      margin: 50px auto;
+    }
+
+    video {
+      width: 80%;
+      max-width: 600px;
+      border-radius: 20px;
+      border: 6px solid white;
+      box-shadow: 0 0 40px rgba(255, 105, 180, 0.4);
+      display: block;
+      margin: 30px auto;
+    }
+
+    .video-controls {
+      margin-top: 10px;
+    }
+
+    button {
+      background-color: #ff7eb9;
+      border: none;
+      border-radius: 8px;
+      color: white;
+      font-weight: bold;
+      padding: 8px 14px;
+      cursor: pointer;
+      margin: 0 6px;
+      transition: background 0.2s ease;
+    }
+
+    button:hover {
+      background-color: #ff5fa6;
+    }
+
+    .footer {
+      margin-top: 60px;
+      font-weight: bold;
+      font-size: 18px;
+      color: #ff3388;
+    }
+
+    /* Hiệu ứng tim */
     .heart {
       position: absolute;
       width: 20px;
@@ -71,44 +123,12 @@
       border-radius: 50%;
     }
 
-    .heart::before {
-      top: -10px;
-      left: 0;
-    }
-
-    .heart::after {
-      top: 0;
-      left: -10px;
-    }
+    .heart::before { top: -10px; left: 0; }
+    .heart::after { top: 0; left: -10px; }
 
     @keyframes floatUp {
-      0% {
-        transform: scale(0.8) rotate(45deg) translateY(0);
-        opacity: 1;
-      }
-      100% {
-        transform: scale(1.6) rotate(45deg) translateY(-120px);
-        opacity: 0;
-      }
-    }
-
-    hr {
-      width: 80%;
-      border: none;
-      border-top: 1px dashed #ffb6d9;
-      margin: 50px auto;
-    }
-
-    .caption {
-      margin-top: 12px;
-      font-size: 16px;
-      color: #ff3388;
-    }
-
-    .footer {
-      margin-top: 40px;
-      font-weight: bold;
-      color: #ff3388;
+      0% { transform: scale(0.8) rotate(45deg) translateY(0); opacity: 1; }
+      100% { transform: scale(1.6) rotate(45deg) translateY(-120px); opacity: 0; }
     }
   </style>
 </head>
@@ -117,34 +137,66 @@
   <h2>From Hapi Charms with love 💗</h2>
 
   <div class="gallery">
+    <!-- Ảnh 1 -->
     <div class="photo-container" onclick="burstHearts(this)">
       <img src="4.jpg" alt="Ảnh 1" />
-      <div class="caption">Anh làm chú gấu này mong chú sẽ thay anh bảo vệ giấc ngủ và những giấc mơ đẹp của em nhé</div>
+      <div class="caption">"Anh làm chú gấu này mong chú sẽ thay anh bảo vệ giấc ngủ và những giấc mơ đẹp của em nhé"</div>
     </div>
 
     <hr />
+
+    <!-- Ảnh 2 -->
     <div class="photo-container" onclick="burstHearts(this)">
       <img src="6.jpg" alt="Ảnh 2" />
-      <div class="caption">Món quà anh được nhận vào buổi first date của chúng mình, anh thích lắm hehe</div>
+      <div class="caption">"Món quà anh được nhận vào buổi first date của chúng mình, anh thích lắm hehe"</div>
     </div>
 
     <hr />
+
+    <!-- Ảnh 3 -->
     <div class="photo-container" onclick="burstHearts(this)">
       <img src="5.jpg" alt="Ảnh 3" />
-      <div class="caption">Món quà handmade đầu tiên anh tự tay làm tặng em nè</div>
+      <div class="caption">"Món quà handmade đầu tiên anh tự tay làm tặng em nè"</div>
+    </div>
+
+    <hr />
+
+    <!-- Video -->
+    <video id="video" controls>
+      <source src="7149023309407.mp4" type="video/mp4">
+      Trình duyệt của bạn không hỗ trợ video.
+    </video>
+
+    <div class="video-controls">
+      <button onclick="togglePlay()">Play / Pause</button>
+      <button onclick="toggleMute()">Mute / Unmute</button>
+    </div>
+
+    <div class="caption">
+      "Mèo méo meo mèo meo, con mèo ngu ngốc đáng yêu cute phô mai we xin chào cạ nhà"
     </div>
   </div>
 
   <div class="footer">From Hapi Charms with love &lt;3</div>
 
   <script>
+    const video = document.getElementById("video");
+
+    function togglePlay() {
+      if (video.paused) video.play();
+      else video.pause();
+    }
+
+    function toggleMute() {
+      video.muted = !video.muted;
+    }
+
     function burstHearts(container) {
       for (let i = 0; i < 15; i++) {
         const heart = document.createElement("div");
         heart.classList.add("heart");
         container.appendChild(heart);
 
-        // Random vị trí quanh viền ảnh
         const angle = Math.random() * 2 * Math.PI;
         const radius = 160 + Math.random() * 40;
         const x = Math.cos(angle) * radius;
@@ -155,16 +207,15 @@
         heart.style.animationDelay = (Math.random() * 0.3) + "s";
         heart.style.transform = `rotate(45deg) translate(${x}px, ${y}px)`;
 
-        // random kích thước, màu nhẹ khác
         const scale = 0.6 + Math.random() * 0.6;
         heart.style.transformOrigin = "center";
         heart.style.scale = scale;
         heart.style.backgroundColor = ["#ff4b9f", "#ff77aa", "#ffa3c3"][Math.floor(Math.random()*3)];
 
-        // Tự xóa sau khi xong animation
         setTimeout(() => heart.remove(), 2000);
       }
     }
   </script>
 </body>
 </html>
+
