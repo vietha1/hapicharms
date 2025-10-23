@@ -3,101 +3,168 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Xem video</title>
+  <title>From Hapi Charms with love 💕</title>
   <style>
     body {
       margin: 0;
-      height: 100vh;
+      padding: 20px;
+      text-align: center;
+      background-color: #fff0f5;
+      font-family: "Poppins", sans-serif;
+      color: #ff4b9f;
+    }
+
+    img.logo {
+      width: 120px;
+      display: block;
+      margin: 0 auto 20px;
+    }
+
+    h2 {
+      margin-bottom: 40px;
+      font-weight: 600;
+    }
+
+    .gallery {
       display: flex;
-      justify-content: center;
-      align-items: center;
-      background-color: #000;
-      color: white;
-      font-family: sans-serif;
       flex-direction: column;
-    }
-    video {
-      width: 90%;
-      max-width: 800px;
-      border-radius: 12px;
-      box-shadow: 0 0 20px rgba(255, 255, 255, 0.2);
-    }
-    .controls {
-      margin-top: 12px;
-      display: flex;
       align-items: center;
-      gap: 10px;
+      gap: 60px;
+      position: relative;
     }
-    button {
-      background-color: #ff8800;
-      color: white;
-      border: none;
-      padding: 8px 16px;
-      border-radius: 8px;
+
+    .photo-container {
+      position: relative;
+      display: inline-block;
+      border-radius: 16px;
+      overflow: visible;
       cursor: pointer;
-      font-size: 15px;
     }
-    button:hover {
-      background-color: #ffaa33;
+
+    .photo-container img {
+      width: 350px;
+      border-radius: 16px;
+      box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+      position: relative;
+      z-index: 2;
+    }
+
+    .heart {
+      position: absolute;
+      width: 20px;
+      height: 20px;
+      background-color: #ff4b9f;
+      transform: rotate(45deg);
+      opacity: 0.9;
+      animation: floatUp 2s ease-out forwards;
+      filter: blur(1px);
+      z-index: 1;
+    }
+
+    .heart::before,
+    .heart::after {
+      content: "";
+      position: absolute;
+      width: 20px;
+      height: 20px;
+      background-color: #ff4b9f;
+      border-radius: 50%;
+    }
+
+    .heart::before {
+      top: -10px;
+      left: 0;
+    }
+
+    .heart::after {
+      top: 0;
+      left: -10px;
+    }
+
+    @keyframes floatUp {
+      0% {
+        transform: scale(0.8) rotate(45deg) translateY(0);
+        opacity: 1;
+      }
+      100% {
+        transform: scale(1.6) rotate(45deg) translateY(-120px);
+        opacity: 0;
+      }
+    }
+
+    hr {
+      width: 80%;
+      border: none;
+      border-top: 1px dashed #ffb6d9;
+      margin: 50px auto;
+    }
+
+    .caption {
+      margin-top: 12px;
+      font-size: 16px;
+      color: #ff3388;
+    }
+
+    .footer {
+      margin-top: 40px;
+      font-weight: bold;
+      color: #ff3388;
     }
   </style>
 </head>
 <body>
-  <video id="player" controls muted>
-    <source id="videoSource" src="" type="video/mp4" />
-    Trình duyệt của bạn không hỗ trợ video.
-  </video>
+  <img src="Bản_sao_của_Hapi-removebg-preview.png" class="logo" alt="Logo Hapi Charms" />
+  <h2>From Hapi Charms with love 💗</h2>
 
-  <div class="controls">
-    <button id="toggleBtn">Play</button>
-    <button id="muteBtn">Unmute</button>
+  <div class="gallery">
+    <div class="photo-container" onclick="burstHearts(this)">
+      <img src="4.jpg" alt="Ảnh 1" />
+      <div class="caption">Anh làm chú gấu này mong chú sẽ thay anh bảo vệ giấc ngủ và những giấc mơ đẹp của em nhé</div>
+    </div>
+
+    <hr />
+    <div class="photo-container" onclick="burstHearts(this)">
+      <img src="6.jpg" alt="Ảnh 2" />
+      <div class="caption">Món quà anh được nhận vào buổi first date của chúng mình, anh thích lắm hehe</div>
+    </div>
+
+    <hr />
+    <div class="photo-container" onclick="burstHearts(this)">
+      <img src="5.jpg" alt="Ảnh 3" />
+      <div class="caption">Món quà handmade đầu tiên anh tự tay làm tặng em nè</div>
+    </div>
   </div>
 
+  <div class="footer">From Hapi Charms with love &lt;3</div>
+
   <script>
-    // ✅ Lấy tham số id từ URL
-    const params = new URLSearchParams(window.location.search);
-    const id = params.get("id") || "1"; // mặc định id=1 nếu không có
+    function burstHearts(container) {
+      for (let i = 0; i < 15; i++) {
+        const heart = document.createElement("div");
+        heart.classList.add("heart");
+        container.appendChild(heart);
 
-    // ✅ Map id sang file video thật (bạn có thể thêm nhiều hơn)
-    const videoMap = {
-      1: "7149023309407.mp4",
-      2: "video2.mp4",
-      3: "video3.mp4"
-    };
+        // Random vị trí quanh viền ảnh
+        const angle = Math.random() * 2 * Math.PI;
+        const radius = 160 + Math.random() * 40;
+        const x = Math.cos(angle) * radius;
+        const y = Math.sin(angle) * radius;
 
-    const videoFile = videoMap[id] || videoMap[1];
-    const video = document.getElementById("player");
-    const source = document.getElementById("videoSource");
-    const toggleBtn = document.getElementById("toggleBtn");
-    const muteBtn = document.getElementById("muteBtn");
+        heart.style.left = 50 + x / 4 + "%";
+        heart.style.bottom = "0";
+        heart.style.animationDelay = (Math.random() * 0.3) + "s";
+        heart.style.transform = `rotate(45deg) translate(${x}px, ${y}px)`;
 
-    source.src = videoFile;
-    video.load();
+        // random kích thước, màu nhẹ khác
+        const scale = 0.6 + Math.random() * 0.6;
+        heart.style.transformOrigin = "center";
+        heart.style.scale = scale;
+        heart.style.backgroundColor = ["#ff4b9f", "#ff77aa", "#ffa3c3"][Math.floor(Math.random()*3)];
 
-    // ✅ Nút play/pause
-    toggleBtn.addEventListener("click", () => {
-      if (video.paused) {
-        video.play();
-        toggleBtn.textContent = "Pause";
-      } else {
-        video.pause();
-        toggleBtn.textContent = "Play";
+        // Tự xóa sau khi xong animation
+        setTimeout(() => heart.remove(), 2000);
       }
-    });
-
-    // ✅ Nút bật/tắt tiếng
-    muteBtn.addEventListener("click", () => {
-      video.muted = !video.muted;
-      muteBtn.textContent = video.muted ? "Unmute" : "Mute";
-    });
-
-    // ✅ Tự đổi nút khi video dừng
-    video.addEventListener("pause", () => {
-      toggleBtn.textContent = "Play";
-    });
-    video.addEventListener("play", () => {
-      toggleBtn.textContent = "Pause";
-    });
+    }
   </script>
 </body>
 </html>
